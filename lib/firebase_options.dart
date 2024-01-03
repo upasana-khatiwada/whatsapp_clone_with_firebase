@@ -17,7 +17,10 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      return web;
+      throw UnsupportedError(
+        'DefaultFirebaseOptions have not been configured for web - '
+        'you can reconfigure this by running the FlutterFire CLI again.',
+      );
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
@@ -25,7 +28,10 @@ class DefaultFirebaseOptions {
       case TargetPlatform.iOS:
         return ios;
       case TargetPlatform.macOS:
-        return macos;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for macos - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.windows:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for windows - '
@@ -43,38 +49,20 @@ class DefaultFirebaseOptions {
     }
   }
 
-  static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyAb2Pqd0-dkoNnh0rPJ2_0KCjUuYM4Z0UQ',
-    appId: '1:251864479113:web:5fad80c4de197a46f39d58',
-    messagingSenderId: '251864479113',
-    projectId: 'whatsapp-clone-backend-7e2c0',
-    authDomain: 'whatsapp-clone-backend-7e2c0.firebaseapp.com',
-    storageBucket: 'whatsapp-clone-backend-7e2c0.appspot.com',
-  );
-
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyAKWKX64Pq06e9kbg_q0W9m5pauru_lnKY',
-    appId: '1:251864479113:android:ff8ab0fc2c48f1bff39d58',
-    messagingSenderId: '251864479113',
-    projectId: 'whatsapp-clone-backend-7e2c0',
-    storageBucket: 'whatsapp-clone-backend-7e2c0.appspot.com',
+    apiKey: 'AIzaSyAzPuU2946aMeiAAhCam06s6dLzIlzW4aA',
+    appId: '1:67965041556:android:977def3adf6d5ee88f2d81',
+    messagingSenderId: '67965041556',
+    projectId: 'whatsapp-clone-backend-9eae0',
+    storageBucket: 'whatsapp-clone-backend-9eae0.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyCftQHRxo-oD9BqGr1i1CUxcxCiSdWW084',
-    appId: '1:251864479113:ios:b684d6ebd03e8396f39d58',
-    messagingSenderId: '251864479113',
-    projectId: 'whatsapp-clone-backend-7e2c0',
-    storageBucket: 'whatsapp-clone-backend-7e2c0.appspot.com',
+    apiKey: 'AIzaSyCyz9OV92RkGldpckV4TH-rsr9iqvI9Lzc',
+    appId: '1:67965041556:ios:5e6dc3af877d41738f2d81',
+    messagingSenderId: '67965041556',
+    projectId: 'whatsapp-clone-backend-9eae0',
+    storageBucket: 'whatsapp-clone-backend-9eae0.appspot.com',
     iosBundleId: 'com.example.whatsappClone',
-  );
-
-  static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyCftQHRxo-oD9BqGr1i1CUxcxCiSdWW084',
-    appId: '1:251864479113:ios:f7b5267eaf5d5b52f39d58',
-    messagingSenderId: '251864479113',
-    projectId: 'whatsapp-clone-backend-7e2c0',
-    storageBucket: 'whatsapp-clone-backend-7e2c0.appspot.com',
-    iosBundleId: 'com.example.whatsappClone.RunnerTests',
   );
 }
