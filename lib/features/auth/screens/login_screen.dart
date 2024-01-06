@@ -1,10 +1,12 @@
 import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:whatsapp_clone/common/widgets/custom_button.dart';
+import 'package:whatsapp_clone/features/auth/controller/auth_controller.dart';
 
 import '../../../color.dart';
 
-class LoginScreen extends StatefulWidget {
+class LoginScreen extends ConsumerStatefulWidget {
   //route path for navigation purposes.
   //Useful to navigate to this screen using the "Navigator" like
   //
@@ -14,10 +16,10 @@ class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  ConsumerState<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LoginScreenState extends ConsumerState<LoginScreen> {
   final phoneController = TextEditingController();
   Country? country;
   @override
@@ -26,7 +28,7 @@ class _LoginScreenState extends State<LoginScreen> {
     phoneController.dispose();
   }
 
-//froom package country picker
+//from package country picker
   void pickCountry() {
     showCountryPicker(
         context: context,
@@ -35,6 +37,23 @@ class _LoginScreenState extends State<LoginScreen> {
             country = _country;
           });
         });
+  }
+
+//send this phone number to otp screen
+  void sendPhoneNumber() {
+    String phoneNumber = phoneController.text.trim();
+    if (country != null && phoneNumber.isNotEmpty) {
+      //If coming from a Provider ref.read is Provider.of(context,listen:false)
+      ref
+          .read(authControllerProvider)
+//because without country code firebase auth will fail so we need +${country!.phoneCode} with phonenumber
+          .signInWithPhone(context, '+${country!.phoneCode}$phoneNumber');
+
+//--------------------------------------------------------------
+//Provider ref ->Interact provider with provider               ||
+//Widget ref -> makes widget interact with provider            ||
+//---------------------------------------------------------------
+    }
   }
 
   @override

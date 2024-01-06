@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "67965041556",
-    "project_id": "whatsapp-clone-backend-9eae0",
-    "storage_bucket": "whatsapp-clone-backend-9eae0.appspot.com"
+    "project_number": "1081239481218",
+    "project_id": "esewa-clone-9c274",
+    "storage_bucket": "esewa-clone-9c274.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:67965041556:android:977def3adf6d5ee88f2d81",
+        "mobilesdk_app_id": "1:1081239481218:android:61e96b7cf2b9a95a68bd9b",
         "android_client_info": {
-          "package_name": "com.example.whatsapp_clone"
+          "package_name": "com.example.esewa_clone"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyAzPuU2946aMeiAAhCam06s6dLzIlzW4aA"
+          "current_key": "AIzaSyAq4_4P_N6nWm6mXdodetb3BLFAdwIzxLE"
         }
       ],
       "services": {

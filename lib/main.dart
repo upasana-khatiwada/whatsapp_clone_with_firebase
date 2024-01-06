@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:whatsapp_clone/features/splash_screen/splash_screen.dart';
 import 'package:whatsapp_clone/firebase_options.dart';
 import 'package:whatsapp_clone/router.dart';
@@ -11,7 +12,8 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const MyApp());
+  //ProviderScope widget is provided by riverpod that keeps track or it consists state of application
+  runApp(ProviderScope(child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {

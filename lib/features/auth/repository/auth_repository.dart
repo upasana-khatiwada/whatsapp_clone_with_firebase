@@ -1,9 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../common/utils/utils.dart';
 import '../screens/otp_screen.dart';
+
+final authRepositoryProvider = Provider(
+  (ref) => AuthRepository(
+    auth: FirebaseAuth.instance,
+    firestore: FirebaseFirestore.instance,
+  ),
+);
 
 //for the authentication part of phone validation
 class AuthRepository {
