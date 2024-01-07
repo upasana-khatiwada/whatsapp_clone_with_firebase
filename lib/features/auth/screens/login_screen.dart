@@ -5,6 +5,7 @@ import 'package:whatsapp_clone/common/widgets/custom_button.dart';
 import 'package:whatsapp_clone/features/auth/controller/auth_controller.dart';
 
 import '../../../color.dart';
+import '../../../common/utils/utils.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   //route path for navigation purposes.
@@ -46,13 +47,15 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       //If coming from a Provider ref.read is Provider.of(context,listen:false)
       ref
           .read(authControllerProvider)
-//because without country code firebase auth will fail so we need +${country!.phoneCode} with phonenumber
+          //because without country code firebase auth will fail so we need +${country!.phoneCode} with phonenumber
           .signInWithPhone(context, '+${country!.phoneCode}$phoneNumber');
 
-//--------------------------------------------------------------
-//Provider ref ->Interact provider with provider               ||
-//Widget ref -> makes widget interact with provider            ||
-//---------------------------------------------------------------
+      //--------------------------------------------------------------
+      //Provider ref ->Interact provider with provider               ||
+      //Widget ref -> makes widget interact with provider            ||
+      //---------------------------------------------------------------
+    } else {
+      showSnackBar(context: context, content: 'Fill out all the fields');
     }
   }
 
@@ -66,46 +69,48 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         elevation: 0,
         backgroundColor: backgroundColor,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(18.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const Text('WhatsApp will need to verify your phone number.'),
-            const SizedBox(
-              height: 10,
-            ),
-            TextButton(
-              onPressed: pickCountry,
-              child: const Text('Pick Country'),
-            ),
-            const SizedBox(height: 5),
-            Row(
-              children: [
-                if (country != null) Text('+${country!.phoneCode}'),
-                const SizedBox(
-                  width: 10,
-                ),
-                SizedBox(
-                  width: size.width * 0.7,
-                  child: TextField(
-                    controller: phoneController,
-                    decoration: const InputDecoration(
-                      hintText: 'phone number',
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(18.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const Text('WhatsApp will need to verify your phone number.'),
+              const SizedBox(
+                height: 10,
+              ),
+              TextButton(
+                onPressed: pickCountry,
+                child: const Text('Pick Country'),
+              ),
+              const SizedBox(height: 5),
+              Row(
+                children: [
+                  if (country != null) Text('+${country!.phoneCode}'),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  SizedBox(
+                    width: size.width * 0.7,
+                    child: TextField(
+                      controller: phoneController,
+                      decoration: const InputDecoration(
+                        hintText: 'phone number',
+                      ),
                     ),
                   ),
-                ),
-              ],
-            ),
-            SizedBox(height: size.height * 0.6),
-            SizedBox(
-              width: 90,
-              child: CustomButton(
-                onPressed: () {},
-                text: 'NEXT',
+                ],
               ),
-            )
-          ],
+              SizedBox(height: size.height * 0.6),
+              SizedBox(
+                width: 90,
+                child: CustomButton(
+                  onPressed: sendPhoneNumber,
+                  text: 'NEXT',
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
