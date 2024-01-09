@@ -1,10 +1,15 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:whatsapp_clone/common/repositories/common_firebase_storage_repository.dart';
 import 'package:whatsapp_clone/features/auth/screens/user_information_screen.dart';
 
 import '../../../common/utils/utils.dart';
+import '../../../models/user_model.dart';
+import '../../../screens/mobile_layout_screen.dart';
 import '../screens/otp_screen.dart';
 
 final authRepositoryProvider = Provider(
@@ -70,6 +75,46 @@ class AuthRepository {
       );
     } on FirebaseAuthException catch (e) {
       showSnackBar(context: context, content: e.message!);
+    }
+  }
+
+  void saveUserDataToFirebase({
+    required String name,
+    //this file can be null as the user can keep the default profile as well
+    required File? profilePic,
+    required ProviderRef ref,
+    required BuildContext context,
+  }) async {
+    try {
+      String uid = auth.currentUser!.uid;
+      String photoUrl =
+          'https://pngtree.com/freepng/profile-line-black-icon_4008141.html';
+      if (profilePic != null) {
+        photoUrl = await ref
+            .read(commonFirebaseStorageRepositoryProvider)
+            .storeFileToFirebase(
+              'profilePic/$uid',
+              profilePic,
+            );
+      }
+      var user = UserModel(
+        name: name,
+        uid: uid,
+        profilePic: photoUrl,
+        isOnline: true,
+        phoneNumber: auth.currentUser!.phoneNumber!,
+        groupId: [],
+      );
+      await firestore.collection('users').doc(uid).set(user.toMap());
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const MobileLayoutScreen(),
+        ),
+        (route) => false,
+      );
+    } catch (e) {
+      showSnackBar(context: context, content: e.toString());
     }
   }
 }
