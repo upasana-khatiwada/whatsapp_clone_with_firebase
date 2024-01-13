@@ -28,14 +28,15 @@ class AuthRepository {
     required this.firestore,
   });
 
-  Future<UserModel?> getCurrentUserData() async{
-    var userData = await firestore.collection('users').doc(auth.currentUser?.uid).get();
+  Future<UserModel?> getCurrentUserData() async {
+    var userData =
+        await firestore.collection('users').doc(auth.currentUser?.uid).get();
     UserModel? user;
-    if(userData.data() != null){
-       user = UserModel.fromMap(userData.data()!);
+    if (userData.data() != null) {
+      user = UserModel.fromMap(userData.data()!);
     }
     return user;
-  } 
+  }
 
   void signInWithPhone(BuildContext context, String phoneNumber) async {
     try {
@@ -125,5 +126,13 @@ class AuthRepository {
     } catch (e) {
       showSnackBar(context: context, content: e.toString());
     }
+  }
+
+  Stream<UserModel> userData(String userId) {
+    return firestore.collection('users').doc(userId).snapshots().map(
+          (event) => UserModel.fromMap(
+            event.data()!,
+          ),
+        );
   }
 }
