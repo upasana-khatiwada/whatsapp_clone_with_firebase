@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../info.dart';
+import '../../../info.dart';
 import 'my_message_card.dart';
 import 'sender_message_card.dart';
 
