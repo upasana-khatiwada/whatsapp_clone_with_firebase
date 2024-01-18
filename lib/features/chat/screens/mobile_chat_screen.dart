@@ -12,8 +12,11 @@ class MobileChatScreen extends ConsumerWidget {
   static const String routeName = '/mobile-chat-screen';
   final String name;
   final String uid;
-  const MobileChatScreen({Key? key, required this.name, required this.uid})
-      : super(key: key);
+  const MobileChatScreen({
+    Key? key,
+    required this.name,
+    required this.uid,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -63,13 +66,14 @@ class MobileChatScreen extends ConsumerWidget {
       ),
       body: Column(
         children: [
-           Expanded(
+          Expanded(
             child: ChatList(),
           ),
-          BottomChatField(),
+          BottomChatField(
+            recieverUserId: uid,
+          ),
         ],
       ),
     );
   }
 }
-
