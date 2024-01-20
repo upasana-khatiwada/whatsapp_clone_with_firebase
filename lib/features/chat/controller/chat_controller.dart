@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:whatsapp_clone/common/enums/message_enum.dart';
 import 'package:whatsapp_clone/features/auth/controller/auth_controller.dart';
 import 'package:whatsapp_clone/models/chat_contact.dart';
 
@@ -44,6 +47,25 @@ class ChatController {
             recieverUserId: recieverUserId,
             senderUser: value!,
             //isGroupChat: isGroupChat,
+          ),
+        );
+  }
+
+  void sendFileMessage(
+    BuildContext context,
+    File file,
+    String recieverUserId,
+    MessageEnum  messageEnum,
+  ) {
+    ref.read(userDataAuthProvider).whenData(
+          (value) => chatRepository.sendFileMessage(
+            context: context,
+            file: file,
+            recieverUserId: recieverUserId,
+            senderUserData: value!,
+            messageEnum: messageEnum,
+            //isGroupChat: isGroupChat,
+            ref: ref,
           ),
         );
   }
