@@ -26,14 +26,13 @@ class ChatController {
     required this.ref,
   });
 
-  Stream<List<ChatContact>> chatContacts(){
+  Stream<List<ChatContact>> chatContacts() {
     return chatRepository.getContacts();
   }
 
-   Stream<List<Message>> chatStream(String recieverUserId){
+  Stream<List<Message>> chatStream(String recieverUserId) {
     return chatRepository.getChatStream(recieverUserId);
   }
-
 
   void sendTextMessage(
     BuildContext context,
@@ -55,7 +54,7 @@ class ChatController {
     BuildContext context,
     File file,
     String recieverUserId,
-    MessageEnum  messageEnum,
+    MessageEnum messageEnum,
   ) {
     ref.read(userDataAuthProvider).whenData(
           (value) => chatRepository.sendFileMessage(
@@ -66,6 +65,29 @@ class ChatController {
             messageEnum: messageEnum,
             //isGroupChat: isGroupChat,
             ref: ref,
+          ),
+        );
+  }
+
+  void sendGIFMessage(
+    BuildContext context,
+    String gifUrl,
+    String recieverUserId,
+  ) {
+    //for this url we are converting it into
+    //https://giphy.com/gifs/TheSwoon-PQ0VI3S5vqL5pwQQJX
+    //this
+    //https://i.giphy.com/media/PQ0VI3S5vqL5pwQQJX/200.gif
+    int gifUrlPartIndex =
+        gifUrl.lastIndexOf('-') + 1; // part after this PQ0VI3S5vqL5pwQQJX
+    String gifUrlPart = gifUrl.substring(gifUrlPartIndex);
+    String newgifUrl = 'https://i.giphy.com/media/$gifUrlPart/200.gif';
+    ref.read(userDataAuthProvider).whenData(
+          (value) => chatRepository.sendGIFMessage(
+            context: context,
+            gifUrl: newgifUrl,
+            recieverUserId: recieverUserId,
+            senderUser: value!,
           ),
         );
   }
