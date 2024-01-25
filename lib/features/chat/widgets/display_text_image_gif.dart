@@ -21,16 +21,26 @@ class DisplayTextImageGIF extends StatelessWidget {
               fontSize: 16,
             ),
           )
-        : type == MessageEnum.video
-            ? VideoPlayerItem(
-                videoUrl: message,
+        : type == MessageEnum.audio
+            ? IconButton(
+                constraints: const BoxConstraints(
+                  minWidth: 100,
+                ),
+                onPressed: () {},
+                icon: const Icon(
+                  Icons.play_circle,
+                ),
               )
-            : type == MessageEnum.gif
-                ? CachedNetworkImage(
-                    imageUrl: message,
+            : type == MessageEnum.video
+                ? VideoPlayerItem(
+                    videoUrl: message,
                   )
-                : CachedNetworkImage(
-                    imageUrl: message,
-                  );
+                : type == MessageEnum.gif
+                    ? CachedNetworkImage(
+                        imageUrl: message,
+                      )
+                    : CachedNetworkImage(
+                        imageUrl: message,
+                      );
   }
 }
