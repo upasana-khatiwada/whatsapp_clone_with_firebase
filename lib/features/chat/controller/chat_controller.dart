@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:whatsapp_clone/common/enums/message_enum.dart';
+import 'package:whatsapp_clone/common/providers/message_reply_provider.dart';
 import 'package:whatsapp_clone/features/auth/controller/auth_controller.dart';
 import 'package:whatsapp_clone/models/chat_contact.dart';
 
@@ -39,6 +40,7 @@ class ChatController {
     String text,
     String recieverUserId,
   ) {
+    final messageReply = ref.read(messageReplyProvider);
     ref.read(userDataAuthProvider).whenData(
           (value) => chatRepository.sendTextMessage(
             context: context,
@@ -46,8 +48,13 @@ class ChatController {
             recieverUserId: recieverUserId,
             senderUser: value!,
             //isGroupChat: isGroupChat,
+            messageReply: messageReply,
           ),
         );
+
+    //message has come but message reply is not cleared if not cancelled
+
+    ref.watch(messageReplyProvider.notifier).update((state) => null);
   }
 
   void sendFileMessage(
@@ -56,6 +63,7 @@ class ChatController {
     String recieverUserId,
     MessageEnum messageEnum,
   ) {
+    final messageReply = ref.read(messageReplyProvider);
     ref.read(userDataAuthProvider).whenData(
           (value) => chatRepository.sendFileMessage(
             context: context,
@@ -63,10 +71,12 @@ class ChatController {
             recieverUserId: recieverUserId,
             senderUserData: value!,
             messageEnum: messageEnum,
+            messageReply: messageReply,
             //isGroupChat: isGroupChat,
             ref: ref,
           ),
         );
+    ref.watch(messageReplyProvider.notifier).update((state) => null);
   }
 
   void sendGIFMessage(
@@ -74,6 +84,7 @@ class ChatController {
     String gifUrl,
     String recieverUserId,
   ) {
+    final messageReply = ref.read(messageReplyProvider);
     //for this url we are converting it into
     //https://giphy.com/gifs/TheSwoon-PQ0VI3S5vqL5pwQQJX
     //this
@@ -88,7 +99,9 @@ class ChatController {
             gifUrl: newgifUrl,
             recieverUserId: recieverUserId,
             senderUser: value!,
+            messageReply: messageReply,
           ),
         );
+    ref.watch(messageReplyProvider.notifier).update((state) => null);
   }
 }
