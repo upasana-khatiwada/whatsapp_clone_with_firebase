@@ -6,6 +6,8 @@ import 'package:whatsapp_clone/features/auth/screens/login_screen.dart';
 import 'package:whatsapp_clone/features/select_contacts/screens/select_contacts_screen.dart';
 import 'package:whatsapp_clone/features/chat/screens/mobile_chat_screen.dart';
 import 'package:whatsapp_clone/features/status/screens/confirm_status_screen.dart';
+import 'package:whatsapp_clone/features/status/screens/status_screen.dart';
+import 'package:whatsapp_clone/models/status_model.dart';
 
 import 'features/auth/screens/otp_screen.dart';
 import 'features/auth/screens/user_information_screen.dart';
@@ -47,6 +49,13 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return MaterialPageRoute(
         builder: (context) => ConfirmStatusScreen(
           file: file,
+        ),
+      );
+    case StatusScreen.routeName:
+      final status = settings.arguments as Status;
+      return MaterialPageRoute(
+        builder: (context) => StatusScreen(
+          status: status,
         ),
       );
     default:
