@@ -7,16 +7,17 @@ import 'package:whatsapp_clone/common/providers/message_reply_provider.dart';
 import 'package:whatsapp_clone/common/widgets/loader.dart';
 import 'package:whatsapp_clone/features/chat/controller/chat_controller.dart';
 import 'package:whatsapp_clone/models/message.dart';
-
 import '../../../common/enums/message_enum.dart';
 import 'my_message_card.dart';
 import 'sender_message_card.dart';
 
 class ChatList extends ConsumerStatefulWidget {
   final String recieverUserId;
+  final bool isGroupChat;
   const ChatList({
     super.key,
     required this.recieverUserId,
+    required this.isGroupChat,
   });
 
   @override
@@ -36,7 +37,7 @@ class _ChatListState extends ConsumerState<ChatList> {
     bool isMe,
     MessageEnum messageEnum,
   ) {
-    ref.watch(messageReplyProvider.notifier).update((state) => MessageReply(
+    ref.watch(messageReplyProvider.notifier).update((notifier) => MessageReply(
           message,
           isMe,
           messageEnum,
@@ -46,8 +47,13 @@ class _ChatListState extends ConsumerState<ChatList> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<List<Message>>(
-        stream:
-            ref.read(chatControllerProvider).chatStream(widget.recieverUserId),
+        stream: widget.isGroupChat
+            ? ref
+                .read(chatControllerProvider)
+                .groupChatStream(widget.recieverUserId)
+            : ref
+                .read(chatControllerProvider)
+                .chatStream(widget.recieverUserId),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Loader();
@@ -81,7 +87,7 @@ class _ChatListState extends ConsumerState<ChatList> {
                   repliedText: messageData.repliedMessage,
                   username: messageData.repliedTo,
                   repliedMessageType: messageData.repliedMessageType,
-                  onLeftSwipe: (DragUpdateDetails) => onMessageSwipe(
+                  onLeftSwipe: (dragUpdateDetails) => onMessageSwipe(
                     messageData.text,
                     true,
                     messageData.type,
@@ -95,7 +101,7 @@ class _ChatListState extends ConsumerState<ChatList> {
                 type: messageData.type,
                 username: messageData.repliedTo,
                 repliedMessageType: messageData.repliedMessageType,
-                onRightSwipe: (DragUpdateDetails) => onMessageSwipe(
+                onRightSwipe: (dragUpdateDetails) => onMessageSwipe(
                   messageData.text,
                   false,
                   messageData.type,

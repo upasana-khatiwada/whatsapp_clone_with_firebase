@@ -31,6 +31,7 @@ class ChatController {
   Stream<List<ChatContact>> chatContacts() {
     return chatRepository.getContacts();
   }
+
   Stream<List<Group>> chatGroups() {
     return chatRepository.getChatGroups();
   }
@@ -39,10 +40,15 @@ class ChatController {
     return chatRepository.getChatStream(recieverUserId);
   }
 
+  Stream<List<Message>> groupChatStream(String groupId) {
+    return chatRepository.getGroupChatStream(groupId);
+  }
+
   void sendTextMessage(
     BuildContext context,
     String text,
     String recieverUserId,
+    bool isGroupChat,
   ) {
     final messageReply = ref.read(messageReplyProvider);
     ref.read(userDataAuthProvider).whenData(
@@ -51,7 +57,7 @@ class ChatController {
             text: text,
             recieverUserId: recieverUserId,
             senderUser: value!,
-            //isGroupChat: isGroupChat,
+            isGroupChat: isGroupChat,
             messageReply: messageReply,
           ),
         );
@@ -66,6 +72,7 @@ class ChatController {
     File file,
     String recieverUserId,
     MessageEnum messageEnum,
+    bool isGroupChat,
   ) {
     final messageReply = ref.read(messageReplyProvider);
     ref.read(userDataAuthProvider).whenData(
@@ -76,7 +83,7 @@ class ChatController {
             senderUserData: value!,
             messageEnum: messageEnum,
             messageReply: messageReply,
-            //isGroupChat: isGroupChat,
+            isGroupChat: isGroupChat,
             ref: ref,
           ),
         );
@@ -87,6 +94,7 @@ class ChatController {
     BuildContext context,
     String gifUrl,
     String recieverUserId,
+    bool isGroupChat,
   ) {
     final messageReply = ref.read(messageReplyProvider);
     //for this url we are converting it into
@@ -104,6 +112,7 @@ class ChatController {
             recieverUserId: recieverUserId,
             senderUser: value!,
             messageReply: messageReply,
+            isGroupChat: isGroupChat,
           ),
         );
     ref.watch(messageReplyProvider.notifier).update((state) => null);
@@ -113,7 +122,7 @@ class ChatController {
     BuildContext context,
     String recieverUserId,
     String messageId,
-  ){
+  ) {
     chatRepository.setChatMessageSeen(
       context,
       recieverUserId,
