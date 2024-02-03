@@ -8,6 +8,7 @@ import 'package:whatsapp_clone/common/enums/message_enum.dart';
 import 'package:whatsapp_clone/common/providers/message_reply_provider.dart';
 import 'package:whatsapp_clone/common/repositories/common_firebase_storage_repository.dart';
 import 'package:whatsapp_clone/models/chat_contact.dart';
+import 'package:whatsapp_clone/models/group.dart';
 import 'package:whatsapp_clone/models/message.dart';
 
 import '../../../common/utils/utils.dart';
@@ -54,6 +55,19 @@ class ChatRepository {
         ));
       }
       return contacts;
+    });
+  }
+
+   Stream<List<Group>> getChatGroups() {
+    return firestore.collection('groups').snapshots().map((event) {
+      List<Group> groups = [];
+      for (var document in event.docs) {
+        var group = Group.fromMap(document.data());
+        if (group.membersUid.contains(auth.currentUser!.uid)) {
+          groups.add(group);
+        }
+      }
+      return groups;
     });
   }
 
@@ -327,7 +341,7 @@ class ChatRepository {
           .doc(messageId)
           .update({'isSeen': true});
 
-           await firestore
+      await firestore
           .collection('users')
           .doc(recieverUserId)
           .collection('chats')

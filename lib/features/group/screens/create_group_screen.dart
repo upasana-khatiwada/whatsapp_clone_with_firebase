@@ -22,6 +22,7 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
   File? image;
 
   void selectImage() async {
+     if (!mounted) return;
     image = await pickImageFromGallery(context);
     setState(() {});
   }
@@ -34,7 +35,7 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
             image!,
             ref.read(selectedGroupContacts),
           );
-      ref.read(selectedGroupContacts.state).update((state) => []);
+      ref.read(selectedGroupContacts.notifier).update((notifier) => []);
 
       Navigator.pop(context);
     }

@@ -6,6 +6,7 @@ import 'package:whatsapp_clone/common/enums/message_enum.dart';
 import 'package:whatsapp_clone/common/providers/message_reply_provider.dart';
 import 'package:whatsapp_clone/features/auth/controller/auth_controller.dart';
 import 'package:whatsapp_clone/models/chat_contact.dart';
+import 'package:whatsapp_clone/models/group.dart';
 
 import '../../../models/message.dart';
 import '../repositories/chat_repository.dart';
@@ -29,6 +30,9 @@ class ChatController {
 
   Stream<List<ChatContact>> chatContacts() {
     return chatRepository.getContacts();
+  }
+  Stream<List<Group>> chatGroups() {
+    return chatRepository.getChatGroups();
   }
 
   Stream<List<Message>> chatStream(String recieverUserId) {
