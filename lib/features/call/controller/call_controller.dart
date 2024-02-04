@@ -59,4 +59,12 @@ class CallController {
       callRepository.makeCall(senderCallData, context, recieverCallData);
     });
   }
+   void endCall(
+    String callerId,
+    String receiverId,
+    BuildContext context,
+  ) {
+    callRepository.endCall(callerId, receiverId, context);
+  }
 }
+

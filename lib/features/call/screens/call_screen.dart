@@ -1,8 +1,10 @@
 import 'package:agora_uikit/agora_uikit.dart';
+import 'package:agora_uikit/controllers/rtc_buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:whatsapp_clone/common/widgets/loader.dart';
 import 'package:whatsapp_clone/config/agora_config.dart';
+import 'package:whatsapp_clone/features/call/controller/call_controller.dart';
 import 'package:whatsapp_clone/models/call.dart';
 
 class CallScreen extends ConsumerStatefulWidget {
@@ -52,7 +54,15 @@ class _CallScreenState extends ConsumerState<CallScreen> {
                 AgoraVideoButtons(
                   client: client!,
                   disconnectButtonChild: IconButton(
-                    onPressed: () {},
+                    onPressed: () async {
+                      await client!.engine.leaveChannel();
+                      ref.read(callControllerProvider).endCall(
+                            widget.call.callerId,
+                            widget.call.receiverId,
+                            context,
+                          );
+                      Navigator.pop(context);
+                    },
                     icon: const Icon(Icons.call_end),
                   ),
                 )

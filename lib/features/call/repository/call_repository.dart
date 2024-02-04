@@ -51,4 +51,17 @@ class CallRepository {
       showSnackBar(context: context, content: e.toString());
     }
   }
+
+  void endCall(
+    String callerId,
+    String receiverId,
+    BuildContext context,
+  ) async {
+    try {
+      await firestore.collection('call').doc(callerId).delete();
+      await firestore.collection('call').doc(receiverId).delete();
+    } catch (e) {
+      showSnackBar(context: context, content: e.toString());
+    }
+  }
 }
